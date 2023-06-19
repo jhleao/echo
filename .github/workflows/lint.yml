@@ -1,0 +1,21 @@
+name: Lint and check
+
+on:
+  push:
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Install Rust toolchain
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+
+      - name: Run cargo check
+        run: cargo check --all --all-targets --all-features
+
+      - name: Run cargo clippy
+        run: cargo clippy --all --all-targets --all-features -- -D warnings
