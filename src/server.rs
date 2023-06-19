@@ -2,9 +2,9 @@ use hyper::{
     service::{make_service_fn, service_fn},
     Body, Request, Response, Server,
 };
-use std::{convert::Infallible, net::SocketAddr};
+use std::convert::Infallible;
 
-use crate::print::print_http;
+use crate::{config, print::print_http};
 
 /// Echoes HTTP back to the sender and prints the request to stdout.
 async fn echo(req: Request<Body>) -> Result<Response<Body>, Infallible> {
@@ -25,14 +25,21 @@ async fn echo(req: Request<Body>) -> Result<Response<Body>, Infallible> {
     Ok(response)
 }
 
-pub async fn start() {
+async fn shutdown_signal() {
+    tokio::signal::ctrl_c()
+        .await
+        .expect("failed to install CTRL+C signal handler");
+}
+
+pub async fn start(cfg: &config::Config) {
     let make_svc = make_service_fn(|_conn| async { Ok::<_, Infallible>(service_fn(echo)) });
-    let addr = SocketAddr::from(([127, 0, 0, 1], 8000));
-    let server = Server::bind(&addr).serve(make_svc);
+    let server = Server::bind(&cfg.socket_addr).serve(make_svc);
+
+    let graceful = server.with_graceful_shutdown(shutdown_signal());
 
     println!("Echo started!\nWaiting for requests...");
 
-    if let Err(e) = server.await {
+    if let Err(e) = graceful.await {
         eprintln!("server error: {}", e);
     }
 }
