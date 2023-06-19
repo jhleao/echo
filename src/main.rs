@@ -1,3 +1,4 @@
+mod print;
 mod server;
 
 #[tokio::main]

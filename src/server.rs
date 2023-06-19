@@ -4,6 +4,8 @@ use hyper::{
 };
 use std::{convert::Infallible, net::SocketAddr};
 
+use crate::print::print_http;
+
 /// Echoes HTTP back to the sender and prints the request to stdout.
 async fn echo(req: Request<Body>) -> Result<Response<Body>, Infallible> {
     let mut response = Response::new(Body::empty());
@@ -12,6 +14,8 @@ async fn echo(req: Request<Body>) -> Result<Response<Body>, Infallible> {
 
     // Consume the body stream...
     let body_bytes = hyper::body::to_bytes(body).await.unwrap();
+
+    print_http(&parts, &body_bytes);
 
     *response.status_mut() = hyper::StatusCode::OK;
     *response.version_mut() = parts.version;
