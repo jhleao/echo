@@ -49,7 +49,10 @@ pub fn print_http(parts: &Parts, body_bytes: &Bytes) {
     let colored_method = parts.method.as_str().color(method_color);
     let colored_uri = parts.uri.to_string().color(method_color);
     let colored_version = version_str.bright_black();
-    let colored_body = body_str.replace("  ", " ").replace("	", "  ").bright_black();
+    let colored_body = body_str
+        .replace("  ", " ")
+        .replace('\t', "  ")
+        .bright_black();
 
     println!("{}", divider);
     println!("{} {} {}", colored_method, colored_uri, colored_version);
