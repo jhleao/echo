@@ -1,10 +1,10 @@
-name: Lint and check
+name: Clippy and check
 
 on:
   push:
 
 jobs:
-  build:
+  lint-and-check:
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v2
