@@ -8,12 +8,8 @@ name = "echo"
 path = "src/main.rs"
 
 [dependencies]
-hyper = { version = "0.14", features = [
-  "http1",
-  "server",
-  "stream",
-  "runtime",
-] }
+hyper = { version = "0.14", features = ["http1","server","stream","runtime"] }
 tokio = { version = "1", features = ["rt-multi-thread", "macros", "signal"] }
 chrono = "0.4.26"
 termsize = "0.1"
+colored = "2.0.0"
