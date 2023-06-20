@@ -1,3 +1,4 @@
+use colored::Colorize;
 use hyper::{
     service::{make_service_fn, service_fn},
     Body, Request, Response, Server,
@@ -37,7 +38,9 @@ pub async fn start(cfg: &config::Config) {
 
     let graceful = server.with_graceful_shutdown(shutdown_signal());
 
-    println!("Echo started!\nWaiting for requests...");
+    let started_msg = "Echo started.".bright_green().bold();
+    let waiting_msg = "Waiting for requests...".bright_black();
+    println!("{}\n{}", started_msg, waiting_msg);
 
     if let Err(e) = graceful.await {
         eprintln!("server error: {}", e);
