@@ -16,7 +16,7 @@ This is meant for debugging usage and should NOT be used in production environme
 Make sure to install the Rust toolchain (e.g. with [rustup](https://rustup.rs/)) and run the following to start the server in development mode:
 
 ```bash
-cargo run
+PORT=3000 cargo run
 ```
 
 Building and releasing is done automatically with GitHub Actions.
